@@ -3,20 +3,19 @@
 require('dotenv').config();
 
 const fs = require('fs');
-const { exec } = require('child_process');
+const { exec, execSync } = require('child_process');
 const Discord = require('discord.js');
 const client = new Discord.Client({
     disableEveryone: true,
 });
 const utils = require('./utils.js');
 
-
-client.on('ready', async () => {
+client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
     console.log('================================');
     console.log('Downloading latest docker image');
 
-    await exec(
+    let child = exec(
         'docker pull arkscript/nightly:latest',
         {
             cwd: '/tmp',
@@ -33,6 +32,10 @@ client.on('ready', async () => {
             console.log('Update done');
         },
     );
+
+    child.on('close', () => {
+        client.user.setActivity(`${process.env.PREFIX}help`, {type: 'PLAYING'});
+    });
 });
 
 client.on('message', msg => {
@@ -50,6 +53,33 @@ client.on('message', msg => {
                 value: `${Math.round(client.ws.ping)} ms`,
             }],
         }});
+    } else if (cmd === 'help') {
+        msg.channel.send({embed: {
+            color: 0x6666ff,
+            title: 'Help',
+            description: 'Everyone loves documentation!',
+            fields: [
+            {
+                name: 'Prefix',
+                value: process.env.PREFIX,
+            },
+            {
+                name: 'run',
+                value: 'Will run a piece of code, which can fit on multiple lines',
+            },
+            {
+                name: 'ping',
+                value: 'admin only command - ping the bot to make it wiggle',
+            },
+            {
+                name: 'tutorials',
+                value: 'display a list of avaialable tutorials',
+            }],
+            footer: {
+                text: 'Made by SuperFola#5854',                
+            }
+        }});
+    } else if (cmd === 'tutorials') {
     } else if (cmd === 'run') {
         let content = msg.content.substring(process.env.PREFIX.length + 3);
         if (content.trim().length === 0) {
@@ -69,6 +99,10 @@ client.on('message', msg => {
                     color: 0xff0000,
                     title: 'IO error',
                     description: 'Could save to temp file',
+                    footer: {
+                        text: `Requested by ${msg.author.tag}`,
+                        icon_url: msg.author.avatarURL()
+                    },
                 }});
         });
 
@@ -81,7 +115,7 @@ client.on('message', msg => {
                 maxBuffer: 1024, // bytes
             },
             async (error, stdout, stderr) => {
-                if (error && error.message.startsWith('Command failed: docker run'))
+                if (error && error.message.startsWith('Command failed:'))
                     error.message = 'Script was abruptly stopped, probably because it met a timeout error';
 
                 try {
