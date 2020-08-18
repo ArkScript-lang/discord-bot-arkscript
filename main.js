@@ -1,19 +1,13 @@
 'use strict';
 
+require('dotenv').config();
+
 const fs = require('fs');
 const { exec } = require('child_process');
 const Discord = require('discord.js');
 const client = new Discord.Client({
     disableEveryone: true,
 });
-
-/**
-    the configuration should have the following variables:
-    token (discord token)
-    prefix (prefix for the bot)
-    owner (discord id of the owner)
- */
-const config = require('./config.js');
 const utils = require('./utils.js');
 
 
@@ -48,7 +42,7 @@ client.on('message', msg => {
     const args = utils.getCmdArgs(msg);
     const cmd  = args.shift().toLowerCase();
 
-    if (cmd === 'ping' && msg.author.id === config.owner) {
+    if (cmd === 'ping' && msg.author.id === process.env.OWNER) {
         msg.channel.send({embed: {
             color: 0x2ed32e,
             fields: [{
@@ -57,7 +51,7 @@ client.on('message', msg => {
             }],
         }});
     } else if (cmd === 'run') {
-        let content = msg.content.substring(config.prefix.length + 3);
+        let content = msg.content.substring(process.env.PREFIX.length + 3);
         if (content.trim().length === 0) {
             msg.channel.send({embed: {
                 title: 'Error',
@@ -114,4 +108,4 @@ client.on('message', msg => {
     }
 });
 
-client.login(config.token);
+client.login(process.env.TOKEN);

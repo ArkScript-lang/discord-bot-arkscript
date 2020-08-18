@@ -1,15 +1,15 @@
 'use strict';
 
-const config = require('./config.js');
+require('dotenv').config();
 
 function isCommand(msg) {
-    if (msg.author.bot || !msg.content.startsWith(config.prefix))
+    if (msg.author.bot || !msg.content.startsWith(process.env.PREFIX))
         return false;
     return true;
 }
 
 function getCmdArgs(msg) {
-    return msg.content.slice(config.prefix.length).trim().split(/ +/g);
+    return msg.content.slice(process.env.PREFIX.length).trim().split(/ +/g);
 }
 
 exports.isCommand = isCommand;

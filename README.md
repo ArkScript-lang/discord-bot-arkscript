@@ -7,23 +7,13 @@ The sole purpose of this bot is to be able to safely execute ArkScript code thro
 You will need:
 * nodejs >= v12.0
 * docker
-* a config.js file with something like this:
-```js
-'use strict';
-
-const token = 'a very nice and long discord token for your bot';
-const prefix = '$';
-const owner = 'the id of the owner, to run some commands to check if everything is working as intended';
-
-exports.token = token;
-exports.prefix = prefix;
-exports.owner = owner;
-```
+* a `.env` file (you can use the `.env.example` file to build your own)
 
 The bot automatically pulls the latest docker image of ArkScript (nightly builds) before starting.
 
 To start it:
 ```shell
+npm i
 node main.js
 ```
 
