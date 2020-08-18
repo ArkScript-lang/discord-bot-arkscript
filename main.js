@@ -61,7 +61,9 @@ client.on('message', msg => {
             return;
         }
 
-        fs.writeFileSync('/tmp/tmp.ark', content, function (err) {
+        let filename = `/tmp/tmp${msg.id}.ark`;
+
+        fs.writeFileSync(filename, content, function (err) {
             if (err)
                 msg.channel.send({embed: {
                     color: 0xff0000,
@@ -71,39 +73,53 @@ client.on('message', msg => {
         });
 
         exec(
-            'docker run -v /tmp/tmp.ark:/tmp/tmp.ark:z -i arkscript/nightly:latest /tmp/tmp.ark',
+            `docker run -v ${filename}:/tmp/tmp.ark:z -i arkscript/nightly:latest /tmp/tmp.ark`,
             {
                 cwd: '/tmp',
                 env: {},
                 timeout: 10000,  // milliseconds
                 maxBuffer: 1024, // bytes
             },
-            (error, stdout, stderr) => {
+            async (error, stdout, stderr) => {
                 if (error && error.message.startsWith('Command failed: docker run'))
                     error.message = 'Script was abruptly stopped, probably because it met a timeout error';
 
-                msg.channel.send({embed: {
-                    color: 0x6666ff,
-                    title: 'Result',
-                    // description: `Your script ran for ${(Date.now() - ts) * 1000}s`,
-                    fields: [
-                    {
-                        name: 'Error',
-                        value: `${error ? error.message : 'none'}`,
-                    },
-                    {
-                        name: 'stderr',
-                        value: `${stderr ? stderr : 'none'}`,
-                    },
-                    {
-                        name: 'stdout',
-                        value: stdout,
-                    }],
-                    footer: {
-                        text: `Requested by ${msg.author.tag}`,
-                        icon_url: msg.author.avatarURL()
-                    },
-                }});
+                try {
+                    await msg.channel.send({embed: {
+                        color: 0x6666ff,
+                        title: 'Result',
+                        // description: `Your script ran for ${(Date.now() - ts) * 1000}s`,
+                        fields: [
+                        {
+                            name: 'Error',
+                            value: `${error ? error.message : 'none'}`,
+                        },
+                        {
+                            name: 'stderr',
+                            value: `${stderr ? stderr : 'none'}`,
+                        },
+                        {
+                            name: 'stdout',
+                            value: `${stdout.trim().length !== 0 ? stdout : 'none'}`,
+                        }],
+                        footer: {
+                            text: `Requested by ${msg.author.tag}`,
+                            icon_url: msg.author.avatarURL()
+                        },
+                    }});
+                    fs.unlinkSync(filename);
+                } catch (e) {
+                    msg.channel.send({embed: {
+                        color: 0xff0000,
+                        title: 'Error',
+                        description: e.message,
+                        fields: [{name: 'take this', value: 'it\'s dangerous to go alone'}],
+                        footer: {
+                            text: `Requested by ${msg.author.tag}`,
+                            icon_url: msg.author.avatarURL()
+                        },
+                    }});
+                }
             });
     }
 });
