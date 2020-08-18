@@ -105,6 +105,10 @@ client.on('message', msg => {
                         name: 'stdout',
                         value: stdout,
                     }],
+                    footer: {
+                        text: `Requested by ${msg.author.tag}`,
+                        icon_url: msg.author.avatarURL()
+                    },
                 }});
             });
     }
