@@ -26,12 +26,12 @@ function help() {
                 value: 'Will run a piece of code, which can fit on multiple lines',
             },
             {
-                name: 'ping',
-                value: 'admin only command - ping the bot to make it wiggle',
-            },
-            {
                 name: 'tutorials',
                 value: 'display a list of avaialable tutorials',
+            },
+            {
+                name: 'arkscript',
+                value: 'Get details about the project',
             }],
             footer: {
                 text: 'Made by SuperFola#5854',
@@ -112,6 +112,29 @@ function runCode(msg) {
         });
 }
 
+function arkscript() {
+    return {
+        embed: {
+            title: 'ArkScript',
+            description: 'A small, fast, functional and scripting language for video games',
+            color: 0x6666ff,
+            fields: [
+                {
+                    name: 'GitHub',
+                    value: 'https://github.com/ArkScript-lang',
+                },
+                {
+                    name: 'Website',
+                    value: 'https://arkscript-lang.github.io',
+                },
+            ],
+            footer: {
+                text: 'Made by SuperFola#5854',
+            }
+        }
+    };
+}
+
 module.exports = client => {
     client.on('message', msg => {
         if (!utils.isCommand(msg))  // check if it starts with our prefix
@@ -121,8 +144,9 @@ module.exports = client => {
         const cmd  = args.shift().toLowerCase();
 
         if (utils.isOwner(msg.author) && admin.checkAndRunAdminCmds(client, msg, cmd, args)) ;
-        else if (cmd === 'help')       msg.channel.send(help());
-        else if (cmd === 'tutorials')  msg.channel.send(tutos.tutorials());
-        else if (cmd === 'run')        runCode(msg);
+        else if (cmd === 'help')          msg.channel.send(help());
+        else if (cmd.startsWith('tuto'))  tutos.handle(client, msg, cmd, args);
+        else if (cmd === 'run')           runCode(msg);
+        else if (cmd === 'arkscript')     msg.channel.send(arkscript());
     });
 };
