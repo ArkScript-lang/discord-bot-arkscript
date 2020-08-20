@@ -28,7 +28,7 @@ exports.run = (client, msg, args) => {
                         },
                     ],
                     footer: {
-                        text: `Required by ${msg.author.tag}`,
+                        text: `Requested by ${msg.author.tag}`,
                         icon_url: msg.author.avatarURL(),
                     }
                 }

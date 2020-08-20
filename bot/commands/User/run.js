@@ -21,6 +21,7 @@ exports.run = (client, msg, args) => {
 
     // generate file for the code
     let filename = `/tmp/tmp${msg.id}.ark`;
+    let cidfile  = `/tmp/cid${msg.id}`;
 
     fs.writeFileSync(filename, content, function (err) {
         if (err)
@@ -36,11 +37,26 @@ exports.run = (client, msg, args) => {
     });
 
     safeExecAsync(
-        `docker run -v ${filename}:/tmp/tmp.ark:z -i arkscript/nightly:latest /tmp/tmp.ark`,
+        `docker run -v ${filename}:/tmp/tmp.ark:z -i --cidfile ${cidfile} arkscript/nightly:latest /tmp/tmp.ark`,
 
-        (error, stdout, stderr) => {
+        async (error, stdout, stderr) => {
             if (error && error.message.startsWith('Command failed:'))
                 error.message = 'Script was abruptly stopped, probably because it met a timeout error';
+
+            // check if container is still running
+            safeExecAsync(
+                `docker ps -q | grep $(cat ${cidfile} | head -c 12)`,
+                (error, stdout, stderr) => {
+                    if (error) msg.channel.send(`:x: Error while checking if container was still running: ${error.message}`);
+                    if (stderr) msg.channel.send(`:x: stderr: ${stderr}`);
+                    if (stdout.trim().length === 0)  // no container found
+                        return;
+                    else
+                        safeExecAsync(`docker kill $(cat ${cidfile})`, (error, stdout, stderr) => {
+                            if (error || stderr) msg.channel.send(`:x: Container still running, couldn't kill it`);
+                            else msg.channel.send(`:white_check_mark: Container was still running but luckily we managed to catch it and imprison it`);
+                        });
+                });
 
             msg.channel.send({embed: {
                 color: 0x6666ff,
@@ -68,6 +84,7 @@ exports.run = (client, msg, args) => {
 
             // remove temp file
             fs.unlinkSync(filename);
+            // fs.unlinkSync(cidfile);
         });
 };
 
