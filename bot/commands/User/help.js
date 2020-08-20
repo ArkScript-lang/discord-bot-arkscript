@@ -7,7 +7,7 @@ const { MessageEmbed } = require('discord.js');
 exports.run = (client, msg, args) => {
     if(args[0]) {
         let cmd = client.commands.get(args.join(' '));
-        if(!cmd) return msg.channel.send(`:x: Commands not found with name \`${args.join(' ')}\` !`);
+        if(!cmd) return msg.channel.send(`:x: Command not found with name \`${args.join(' ')}\` !`);
 
         let info_commands = new MessageEmbed()
             .setAuthor('Help Commands', client.user.displayAvatarURL({format: 'png'}))
