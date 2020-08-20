@@ -15,4 +15,6 @@ module.exports = client => {
         client.on(eventName, event.bind(null, client));
         delete require.cache[require.resolve(`../events/${file}`)];
     });
+
+    console.log('Events registered');
 };

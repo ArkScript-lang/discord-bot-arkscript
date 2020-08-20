@@ -20,8 +20,9 @@ exports.run = (client, msg, args) => {
     } else {
         const categories = [];
         client.commands.forEach((command) => {
-            if (!categories.includes(command.help.category)){
-                if (command.help.category === 'OWNER' && msg.author.id !== process.env.OWNER) return;
+            if (!categories.includes(command.help.category)) {
+                if (command.help.category === 'Owner' && msg.author.id !== process.env.OWNER) return;
+                if (command.help.category === 'Admin' && !msg.member.hasPermission('ADMINISTRATOR')) return;
                 categories.push(command.help.category);
             };
         });
@@ -39,8 +40,6 @@ exports.run = (client, msg, args) => {
 };
 
 exports.help = {
-    name: 'help',
-    aliases: [''],
     description: 'Get a manual to use the bot',
     usage: 'help',
 };

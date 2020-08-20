@@ -14,8 +14,11 @@ module.exports = client => {
         for (let file of commands) {
             const pull = require(`../commands/${dir}/${file}`);
             pull.help.category = dir;
+            pull.help.name = file.split('.')[0];
             if (pull.help.name)
                 client.commands.set(pull.help.name, pull);
         }
     });
+
+    console.log('Commands registered');
 };

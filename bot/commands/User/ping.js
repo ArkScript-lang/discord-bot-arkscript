@@ -22,7 +22,6 @@ exports.run = async (client, msg, args) => {
 };
 
 exports.help = {
-    name: 'ping',
     description: 'A command to ping the bot',
     usage: 'ping',
 };
