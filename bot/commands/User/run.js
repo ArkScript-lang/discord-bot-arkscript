@@ -56,6 +56,9 @@ exports.run = (client, msg, args) => {
                             if (error || stderr) msg.channel.send(`:x: Container still running, couldn't kill it`);
                             else msg.channel.send(`:white_check_mark: Container was still running but luckily we managed to catch it and imprison it`);
                         });
+
+                    // remove cid file
+                    fs.unlinkSync(cidfile);
                 });
 
             msg.channel.send({embed: {
@@ -84,7 +87,6 @@ exports.run = (client, msg, args) => {
 
             // remove temp file
             fs.unlinkSync(filename);
-            fs.unlinkSync(cidfile);
         });
 };
 
