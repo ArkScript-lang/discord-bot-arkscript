@@ -53,12 +53,12 @@ exports.run = (client, msg, args) => {
                         return;
                     else
                         safeExecAsync(`docker kill $(cat ${cidfile})`, (error, stdout, stderr) => {
-                            if (error || stderr) msg.channel.send(`:x: Container still running, couldn't kill it, ${error.message} / ${stderr}`);
+                            if (error || stderr) msg.channel.send(`:x: Container still running, couldn't kill it`);
                             else msg.channel.send(`:white_check_mark: Container was still running but luckily we managed to catch it and imprison it`);
-                        });
 
-                    // remove cid file
-                    fs.unlinkSync(cidfile);
+                            // remove cid file
+                            fs.unlinkSync(cidfile);
+                        });
                 });
 
             msg.channel.send({embed: {
