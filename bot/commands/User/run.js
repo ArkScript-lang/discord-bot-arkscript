@@ -84,7 +84,7 @@ exports.run = (client, msg, args) => {
 
             // remove temp file
             fs.unlinkSync(filename);
-            // fs.unlinkSync(cidfile);
+            fs.unlinkSync(cidfile);
         });
 };
 
