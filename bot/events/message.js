@@ -17,11 +17,11 @@ module.exports = (client, msg) => {
     // run command based on its name and aliases
     let command = client.commands.get(cmd);
     if (command) {
-        if (command.help.category === 'Owner' && msg.author.id !== process.env.OWNER) {
+        if (command.help.category === 'Owner' && msg.author.id !== process.env.OWNER)
             msg.channel.send(':x: You need to be the bot owner to run this command');
-        } else if (command.help.category === 'Admin' && !msg.member.hasPermission('ADMINISTRATOR')) {
+        else if (command.help.category === 'Admin' && !msg.member.hasPermission('ADMINISTRATOR'))
             msg.channel.send(':x: You need to be an administrator to run this command');
-        } else
+        else
             command.run(client, msg, args);
     }
 };
