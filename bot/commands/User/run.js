@@ -30,7 +30,7 @@ exports.run = (client, msg, args) => {
                 description: 'Could save to temp file',
                 footer: {
                     text: `Requested by ${msg.author.tag}`,
-                    icon_url: msg.author.avatarURL()
+                    icon_url: msg.author.avatarURL(),
                 },
             }});
     });
@@ -47,21 +47,22 @@ exports.run = (client, msg, args) => {
                 title: 'Result',
                 // description: `Your script ran for ${(Date.now() - ts) * 1000}s`,
                 fields: [
-                {
-                    name: 'Error',
-                    value: `${error ? error.message : 'none'}`,
-                },
-                {
-                    name: 'stderr',
-                    value: `${stderr ? stderr : 'none'}`,
-                },
-                {
-                    name: 'stdout',
-                    value: `${stdout.trim().length !== 0 ? stdout : 'none'}`,
-                }],
+                    {
+                        name: 'Error',
+                        value: `${error ? error.message : 'none'}`,
+                    },
+                    {
+                        name: 'stderr',
+                        value: `${stderr ? stderr : 'none'}`,
+                    },
+                    {
+                        name: 'stdout',
+                        value: `${stdout.trim().length !== 0 ? stdout : 'none'}`,
+                    }
+                ],
                 footer: {
                     text: `Requested by ${msg.author.tag}`,
-                    icon_url: msg.author.avatarURL()
+                    icon_url: msg.author.avatarURL(),
                 },
             }});
 
