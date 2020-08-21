@@ -44,17 +44,14 @@ exports.run = (client, msg, args) => {
                 error.message = 'Script was abruptly stopped, probably because it met a timeout error';
 
             // check if container is still running
-            safeExecAsync(
+            await safeExecAsync(
                 `docker ps -q | grep $(cat ${cidfile} | head -c 12)`,
                 async (error, stdout, stderr) => {
-                    console.log("error:", error.message, error.stack);
-                    console.log("stderr:", stderr);
-                    console.log("stdout:", stdout);
-
-                    if (error) msg.channel.send(`:x: Error while checking if container was still running: ${error.message}`);
-                    if (stderr) msg.channel.send(`:x: stderr: ${stderr}`);
+                    // if nothing is returned on stdout we can guess that everything went fine
                     if (stdout.trim().length === 0)  // no container found
                         return;
+                    if (error) msg.channel.send(`:x: Error while checking if container was still running: ${error.message}`);
+                    if (stderr) msg.channel.send(`:x: stderr: ${stderr}`);
                     else
                         await safeExecAsync(`docker kill $(cat ${cidfile})`, (error, stdout, stderr) => {
                             if (error || stderr) msg.channel.send(`:x: Container still running, couldn't kill it`);
