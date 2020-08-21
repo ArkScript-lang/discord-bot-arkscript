@@ -48,8 +48,11 @@ exports.run = (client, msg, args) => {
                 `docker ps -q | grep $(cat ${cidfile} | head -c 12)`,
                 async (error, stdout, stderr) => {
                     // if nothing is returned on stdout we can guess that everything went fine
-                    if (stdout.trim().length === 0)  // no container found
+                    if (stdout.trim().length === 0) {
+                        fs.unlinkSync(cidfile);
                         return;
+                    }
+
                     if (error) msg.channel.send(`:x: Error while checking if container was still running: ${error.message}`);
                     if (stderr) msg.channel.send(`:x: stderr: ${stderr}`);
                     else
