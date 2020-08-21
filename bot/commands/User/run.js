@@ -46,20 +46,23 @@ exports.run = (client, msg, args) => {
             // check if container is still running
             safeExecAsync(
                 `docker ps -q | grep $(cat ${cidfile} | head -c 12)`,
-                (error, stdout, stderr) => {
-                    console.log(error.message, error.stack, stderr, stdout);
+                async (error, stdout, stderr) => {
+                    console.log("error:", error.message, error.stack);
+                    console.log("stderr:", stderr);
+                    console.log("stdout:", stdout);
+
                     if (error) msg.channel.send(`:x: Error while checking if container was still running: ${error.message}`);
                     if (stderr) msg.channel.send(`:x: stderr: ${stderr}`);
                     if (stdout.trim().length === 0)  // no container found
                         return;
                     else
-                        safeExecAsync(`docker kill $(cat ${cidfile})`, (error, stdout, stderr) => {
+                        await safeExecAsync(`docker kill $(cat ${cidfile})`, (error, stdout, stderr) => {
                             if (error || stderr) msg.channel.send(`:x: Container still running, couldn't kill it`);
                             else msg.channel.send(`:white_check_mark: Container was still running but luckily we managed to catch it and imprison it`);
-
-                            // remove cid file
-                            fs.unlinkSync(cidfile);
                         });
+
+                    // remove cid file
+                    fs.unlinkSync(cidfile);
                 });
 
             msg.channel.send({embed: {
