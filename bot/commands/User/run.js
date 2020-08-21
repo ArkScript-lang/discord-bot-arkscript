@@ -1,7 +1,7 @@
 'use strict';
 
 require('dotenv').config();
-
+const Discord = require("discord.js");
 const { safeExecAsync } = require('../../utils.js');
 const fs = require('fs');
 
@@ -11,11 +11,11 @@ exports.run = (client, msg, args) => {
 
     // if no code, return an error
     if (content.trim().length === 0) {
-        msg.channel.send({embed: {
+        msg.channel.send(new Discord.MessageEmbed({
             title: 'Error',
             description: 'No code provided',
             color: 0xff0000,
-        }});
+        }));
         return;
     }
 
@@ -25,7 +25,7 @@ exports.run = (client, msg, args) => {
 
     fs.writeFileSync(filename, content, function (err) {
         if (err)
-            msg.channel.send({embed: {
+            msg.channel.send(new Discord.MessageEmbed({
                 color: 0xff0000,
                 title: 'IO error',
                 description: 'Could save to temp file',
@@ -33,7 +33,7 @@ exports.run = (client, msg, args) => {
                     text: `Requested by ${msg.author.tag}`,
                     icon_url: msg.author.avatarURL(),
                 },
-            }});
+            }));
     });
 
     safeExecAsync(
@@ -65,7 +65,7 @@ exports.run = (client, msg, args) => {
                     fs.unlinkSync(cidfile);
                 });
 
-            msg.channel.send({embed: {
+            msg.channel.send(new Discord.MessageEmbed({
                 color: 0x6666ff,
                 title: 'Result',
                 // description: `Your script ran for ${(Date.now() - ts) * 1000}s`,
@@ -87,7 +87,7 @@ exports.run = (client, msg, args) => {
                     text: `Requested by ${msg.author.tag}`,
                     icon_url: msg.author.avatarURL(),
                 },
-            }});
+            }));
 
             // remove temp file
             fs.unlinkSync(filename);
