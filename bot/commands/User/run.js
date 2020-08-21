@@ -47,6 +47,7 @@ exports.run = (client, msg, args) => {
             safeExecAsync(
                 `docker ps -q | grep $(cat ${cidfile} | head -c 12)`,
                 (error, stdout, stderr) => {
+                    console.log(error.message, error.stack, stderr, stdout);
                     if (error) msg.channel.send(`:x: Error while checking if container was still running: ${error.message}`);
                     if (stderr) msg.channel.send(`:x: stderr: ${stderr}`);
                     if (stdout.trim().length === 0)  // no container found
