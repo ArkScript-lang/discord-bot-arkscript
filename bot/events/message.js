@@ -8,7 +8,7 @@ module.exports = (client, msg) => {
         return;
 
     // get command and arguments after prefix
-    const args = msg.content.slice(process.env.PREFIX.length).trim().split(/ +/g);
+    const args = msg.content.slice(process.env.PREFIX.length).trim().split(/\s+/g);
     const cmd = args.shift().toLowerCase();
 
     // if no command, abort

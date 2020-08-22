@@ -90,7 +90,9 @@ exports.run = (client, msg, args) => {
                         },
                         {
                             name: 'stderr',
-                            value: `${stderr ? stderr : 'none'}`,
+                            value: `\`\`\`
+${stderr ? stderr : 'none'}
+\`\`\``,
                         },
                         {
                             name: 'stdout',
