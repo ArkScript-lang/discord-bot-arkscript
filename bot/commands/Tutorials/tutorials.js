@@ -16,6 +16,10 @@ exports.run = (client, msg, args) => {
                 name: 'tuto 1',
                 value: 'Program structure, printing and conditions',
             },
+            {
+                name: 'tuto 2',
+                value: 'Loops and functions',
+            },
          ],
     }));
 };
