@@ -192,7 +192,7 @@ Example:
 ];
 
 exports.run = (client, msg, args) => {
-    if (args[0] && args[0] >= '0' && args[0] <= `${tutos.length - 1}`)
+    if (args[0] && args[0].length === 1 && args[0] >= '0' && args[0] <= `${tutos.length - 1}`)
         msg.channel.send(tutos[+args[0]]);
     else
         msg.channel.send(':x: The argument is missing or invalid');
