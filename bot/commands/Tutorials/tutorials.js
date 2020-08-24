@@ -9,11 +9,11 @@ exports.run = (client, msg, args) => {
         description: 'A list of commands to launch to get short tutorials in ArkScript',
         fields: [
             {
-                name: 'tuto0',
+                name: 'tuto 0',
                 value: 'Getting started',
             },
             {
-                name: 'tuto1',
+                name: 'tuto 1',
                 value: 'Program structure, printing and conditions',
             },
          ],

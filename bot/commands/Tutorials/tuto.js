@@ -51,7 +51,7 @@ ends, everything inside is removed.`,
     {
         embed: {
             color: 0x6666ff,
-            title: 'Program structure, printing and conditions',
+            title: 'Program structure',
             description: `An ArkScript program is a collection of blocks.
 A block is \`(function arguments...)\`, thus, those are valid programs:
 \`\`\`clojure
@@ -63,7 +63,21 @@ A block is \`(function arguments...)\`, thus, those are valid programs:
 (let foo (fun (a b)
 (+ a b)))
 (print (foo a a))
-\`\`\``,
+\`\`\`
+
+Multiple blocks can be put into one by using the **begin construction**:
+\`\`\`clojure
+(begin
+    (let a 12)
+    (print a)
+    (let b (* a 2))
+    (print b))
+
+# and can be accessed from outside, begin doesn't create a scope
+(print a " " b)
+\`\`\`
+
+\`(begin)\` and \`{}\` are the same thing.`,
             fields: [
                 {
                     name: 'Printing',
@@ -83,13 +97,97 @@ after having validated by pressing *Enter*. The prompt is optionnal,
                 },
                 {
                     name: 'Conditions',
-                    value: `TODO`,
+                    value: `In any programming language, it's useful to control the program
+flow, to be able to give the user multiple choices (attacking an ennemy, befriending
+it, spying on it...) and those things are achieved through conditions.
+Constructing a condition is done like so:
+\`(if condition then else)\`
+The \`else\` bloc is optionnal.
+
+Examples:
+\`\`\`clojure
+(if (= a 12)
+    # then
+    (print "a is 12")
+    # else
+    (print "a is not 12")
+)
+
+(if (and (< a 12) (> b 14))
+    (print "a is < 12 AND b is > 14"))
+\`\`\`
+
+The \`then\` and the \`else\` parts can be composed of multiple functions by
+using the \`begin\` construction.`,
                 },
             ],
             footer: {
-                text: 'tuto 2: Next tutorial is about ...',
-            }
-        }
+                text: 'tuto 2: Next tutorial is about loops and functions',
+            },
+        },
+    },
+    // tuto 2
+    {
+        embed: {
+            color: 0x6666ff,
+            title: 'Loops',
+            description: `Giving the user a choice is a thing, but repeating an action is
+another that is very useful in a program as well. For example, if we need to
+compute the sum of values in a list, we would need to loop over the values
+of the list. In video games, we would need loops to generate waves of ennemies.
+
+Loops in ArkScript are created by using the keyword \`while\`.
+
+Example:
+\`\`\`clojure
+# continue must be a mutable for us the be able to modify it
+(mut continue true)
+(while continue {
+    (print "hello")
+
+    # 10% chance of stopping the loop
+    (if (< (random) 0.1)
+        (set continue false))
+})
+
+# another example using conditions
+(mut i 0)
+(while (< i 10)
+    (puts i " ")  # won't put a \n at the end of the content
+    (set i (+ 1 i)))
+\`\`\``,
+            fields: [
+                {
+                    name: 'Functions',
+                    value: `Functions are a tool to factorize code, to follow the DRY
+(don't repeat yourself) principle. Who would want to write 10 times the same
+100 lines when they can use a function and call it 10 times inside a loop?
+
+Note: ArkScript was particularly optimized to deal with function using few arguments,
+thus encouraging code reuse and code split into functions.
+
+A function is composed of 2 parts: the argument lists and the body:
+\`(fun (a b c) (print a b c))\`
+\`(a b c)\` is the argument list, the print bloc is the body.
+
+The value returned by a function is the last evaluated value in the body,
+if none, \`nil\` is returned.
+
+Example:
+\`\`\`clojure
+(let foo (fun (a b) (begin
+    (print "function got: " a " " b)
+    # return value:
+    (+ a b))))
+
+(print (foo 12 14))  # 26
+\`\`\``,
+                },
+            ],
+            footer: {
+                text: 'tuto 3: Next tutorial is about ...',
+            },
+        },
     },
 ];
 
