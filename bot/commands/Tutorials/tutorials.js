@@ -10,7 +10,7 @@ exports.run = (client, msg, args) => {
         fields: [
             {
                 name: 'tuto 0',
-                value: 'Getting started',
+                value: 'Getting started, the syntax, variables and constants',
             },
             {
                 name: 'tuto 1',
@@ -19,6 +19,10 @@ exports.run = (client, msg, args) => {
             {
                 name: 'tuto 2',
                 value: 'Loops and functions',
+            },
+            {
+                name: 'tuto 3',
+                value: 'Closures, quoting and importation',
             },
          ],
     }));

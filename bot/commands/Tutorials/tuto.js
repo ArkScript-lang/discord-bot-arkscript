@@ -185,8 +185,26 @@ Example:
                 },
             ],
             footer: {
-                text: 'tuto 3: Next tutorial is about ...',
+                text: 'tuto 3: Next tutorial is about closures, quoting and importation',
             },
+        },
+    },
+    // tuto 3
+    {
+        embed: {
+            color: 0x6666ff,
+            title: 'Closures',
+            description: ``,
+            fields: [
+                {
+                    name: 'Quoting',
+                    value: ``,
+                },
+                {
+                    name: 'Importation',
+                    value: ``,
+                },
+            ],
         },
     },
 ];
