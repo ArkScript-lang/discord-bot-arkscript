@@ -189,6 +189,7 @@ Example:
             },
         },
     },
+    /*
     // tuto 3
     {
         embed: {
@@ -206,7 +207,7 @@ Example:
                 },
             ],
         },
-    },
+    },*/
 ];
 
 exports.run = (client, msg, args) => {
