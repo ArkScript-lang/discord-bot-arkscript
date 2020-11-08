@@ -78,32 +78,26 @@ exports.run = (client, msg, args) => {
                     fs.unlinkSync(cidfile);
                 });
 
+            let fields = [];
+            if (error)
+                fields.push({name: 'Error', value: error.message,});
+            if (stderr)
+                fields.push({name: 'stderr', value: stderr,});
+
+            let embed = {
+                color: 0x6666ff,
+                title: 'Result',
+                description: stdout.trim().length !== 0 ? stdout : 'none',
+                footer: {
+                    text: `Requested by ${msg.author.tag}`,
+                    icon_url: msg.author.avatarURL(),
+                },
+            };
+            if (fields.length > 0)
+                embed.fields = fields;
+
             msg.channel.send({
-                embed: {
-                    color: 0x6666ff,
-                    title: 'Result',
-                    // description: `Your script ran for ${(Date.now() - ts) * 1000}s`,
-                    fields: [
-                        {
-                            name: 'Error',
-                            value: `${error ? error.message : 'none'}`,
-                        },
-                        {
-                            name: 'stderr',
-                            value: `\`\`\`
-${stderr ? stderr : 'none'}
-\`\`\``,
-                        },
-                        {
-                            name: 'stdout',
-                            value: `${stdout.trim().length !== 0 ? stdout : 'none'}`,
-                        }
-                    ],
-                    footer: {
-                        text: `Requested by ${msg.author.tag}`,
-                        icon_url: msg.author.avatarURL(),
-                    },
-                }
+                embed: embed,
             });
 
             // remove temp file
