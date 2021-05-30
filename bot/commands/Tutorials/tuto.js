@@ -325,11 +325,10 @@ the macros defined in it are destroyed. Note that a macro defined a in bloc, whi
 other blocs, will be available in all the other sub-blocs.
 
 **Named macros** can be undefined by using \`!{undef name}\`.`,
-        },
-        fields: [
-            {
-                name: 'Named macros',
-                value: `\`\`\`clojure
+            fields: [
+                {
+                    name: 'Named macros',
+                    value: `\`\`\`clojure
 !{a 12}
 
 {
@@ -345,16 +344,16 @@ other blocs, will be available in all the other sub-blocs.
 
 (print a)  # a is still 12 here
 \`\`\``,
-            },
-            {
-                name: 'Condition macros',
-                value: `They can only work on compile time expressions, for example:
+                },
+                {
+                    name: 'Condition macros',
+                    value: `They can only work on compile time expressions, for example:
 
 \`\`\`clojure
 !{a 12}
 !{if (= a 12)
-    !{b 14}
-    !{c 13}
+!{b 14}
+!{c 13}
 }
 
 (print b)  # prints 14
@@ -362,10 +361,10 @@ other blocs, will be available in all the other sub-blocs.
            # c is unavailable here because it was never defined
 \`\`\`
 `,
-            },
-            {
-                name: 'Function macros',
-                value: `They are evaluated recursively, thus they can call themselves or
+                },
+                {
+                    name: 'Function macros',
+                    value: `They are evaluated recursively, thus they can call themselves or
 other macros, and use condition macros. A particularity is that their
 arguments can ArkScript code blocs, such as a \`(let a 12)\` or even
 complexe code blocs like \`{ (mut i 0) (while continue { (print "hello") (set i (+ 1 i)) (if (> i 12) (set continue false)) }) }\`.
@@ -385,17 +384,17 @@ This is called *varargs* or *variadic arguments*.
 (print c)  # prints 3
 
 !{bar (a ...args)
-    (print a " " args)}
+(print a " " args)}
 
 (bar 1)  # prints 1
 (bar 1 2)  # prints 1 [2]
 (bar 1 2 3)  # prints 1 [2 3]
 \`\`\`
 `,
-            },
-            {
-                name: 'More complex example',
-                value: `Here is a more complex example implementing the thread macro. The first
+                },
+                {
+                    name: 'More complex example',
+                    value: `Here is a more complex example implementing the thread macro. The first
 argument is the data, then each function is applied onto it, one after another.
 It allows us to write more readable code, instead of the ugly
 \`(read-string (slurp (io:file (io:resource filename))))\`.
@@ -434,11 +433,10 @@ It allows us to write more readable code, instead of the ugly
 #   io:resource
 #   hello.json
 \`\`\``,
-            },
-            {
-                name: 'List of compile time functions available',
-                value: `You can use those in macros.
-
+                },
+                {
+                    name: 'List of compile time functions available',
+                    value: `You can use those in macros.
 
 * Comparison operators: \`=\`, \`!=\`, \`<\`, \`<=\`, \`>\`, \`>=\`
 * Chaining conditions / inverting them: \`not\`, \`and\`, \`or\`
@@ -450,10 +448,10 @@ or count the number of arguments of a function with \`(argcount function-name)\`
 
 * \`symcat\`: generate a new symbol from a given symbol and a value or expression. \`(- a 1)\` with \`a\` a constant macro (or macro argument) is valid.
 * \`argcount\`: retrieve at compile time the number of arguments taken by a given function. The function must have been defined *before* using \`argcount\`.
-
 `,
-            },
-        ],
+                },
+            ],
+        },
     },
 ];
 
