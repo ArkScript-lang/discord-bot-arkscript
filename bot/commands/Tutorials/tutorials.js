@@ -22,7 +22,11 @@ exports.run = (client, msg, args) => {
             },
             {
                 name: 'tuto 3',
-                value: 'Closures, quoting and importation',
+                value: 'Closures and importation',
+            },
+            {
+                name: 'tuto 4',
+                value: 'Macros'
             },
          ],
     }));
