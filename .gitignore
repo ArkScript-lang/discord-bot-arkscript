@@ -2,3 +2,4 @@ node_modules/
 *.swp
 .env
 docker-volume/
+save.json
