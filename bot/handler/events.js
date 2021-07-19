@@ -5,6 +5,7 @@ require('dotenv').config();
 const fs = require('fs');
 
 module.exports = client => {
+    let start = +new Date();
     fs.readdirSync('./bot/events/').forEach(file => {
         if (!file.endsWith('.js'))
             return;
@@ -16,5 +17,5 @@ module.exports = client => {
         delete require.cache[require.resolve(`../events/${file}`)];
     });
 
-    console.log('Events registered');
+    console.log(`Events registered in ${+new Date() - start}ms`);
 };
