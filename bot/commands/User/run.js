@@ -6,10 +6,18 @@ const { safeExecAsync } = require('../../utils.js');
 const fs = require('fs');
 
 function removeDiscordMarkdown(msg) {
-    let content = msg.content.substring(process.env.PREFIX.length + 3);
-    content = content.substring(content.indexOf("("));
-    content = content.split("").reverse().join("");
-    content = content.substring(content.indexOf(")")).split("").reverse().join("");
+    let content = msg.content.substring(process.env.PREFIX.length + 3).trim();
+    let reversed = content.reverse();
+
+    if (content[0] === "`" && content[1] === "`" && content[2] === "`") {
+        content = content.split("\n").slice(1).join("\n");
+    }
+    if (reversed[0] === reversed[1] && reversed[1] === reversed[2] && reversed[2] === "`") {
+        content = content.split("\n").slice(0, -1).join("\n");
+    }
+    if (content[0] === reversed[0] && content[0] === "`") {
+        content = content.split("").slice(1, -1).join("");
+    }
     return content;
 }
 
