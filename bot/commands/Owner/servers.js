@@ -10,7 +10,7 @@ exports.run = (client, msg, args) => {
     client.guilds.cache.forEach(g => {
         if (g.available) {
             servers.push({
-                name: `${g.name} owned by ${g.owner ? g.owner.displayName : 'unknown'}`,
+                name: `${g.name} owned by ${g.owner ? g.owner.displayName : 'unknown (not in cache)'}`,
                 value: `${g.memberCount} members`,
             });
             total_members += g.memberCount;
